@@ -1,0 +1,47 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:3.2.5"
+	}
+}
+
+plugins {
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+allprojects {
+	group 'com.xdisx'
+	version '0.1.0'
+	repositories {
+		mavenCentral()
+		maven { url 'https://repo.spring.io/milestone' }
+		maven { url 'https://repo.spring.io/snapshot' }
+	}
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.boot:spring-boot-dependencies:3.2.4"
+			mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.1"
+		}
+	}
+
+	dependencies {
+		compileOnly 'org.projectlombok:lombok:1.18.32'
+		annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+		testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.5'
+		testCompileOnly 'org.projectlombok:lombok:1.18.32'
+		testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+	}
+
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
+}

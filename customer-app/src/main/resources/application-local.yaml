@@ -1,0 +1,8 @@
+server:
+  port: 1239
+  error:
+    include-message: always
+
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration

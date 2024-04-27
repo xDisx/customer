@@ -1,0 +1,28 @@
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+
+bootJar {
+    enabled = false
+}
+
+dependencies {
+    implementation project(":customer-api")
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.5'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1'
+
+    testImplementation 'io.cucumber:cucumber-java:7.16.1'
+    testImplementation 'io.cucumber:cucumber-spring:7.16.1'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.16.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    testImplementation 'org.junit.platform:junit-platform-suite-api:1.10.2'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.16.1'
+    testImplementation 'io.micrometer:micrometer-core:1.10.6'
+    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner:4.1.2'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
