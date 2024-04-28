@@ -1,28 +1,46 @@
 package com.xdisx.customer.e2e.customer.steps;
 
 import com.xdisx.customer.e2e.CucumberBootstrap;
+import com.xdisx.customer.e2e.common.utils.AssertionsUtils;
 import com.xdisx.customer.e2e.customer.rest.CustomerController;
+import com.xdisx.customer.e2e.customer.steps.service.RequestBuilderServiceCustomer;
+import feign.FeignException;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.RequiredArgsConstructor;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.http.HttpStatus.OK;
+
 @RequiredArgsConstructor
 public class CustomerSteps extends CucumberBootstrap {
     private final CustomerController customerController;
+    private final RequestBuilderServiceCustomer requestBuilder;
 
-    @When("I call the test api")
-    public void iCallTheTestApi() {
-        String rez = customerController.salut(22);
-        System.out.println("am primit rezultat " + rez);
+    @Before
+    public void setup() {
+        customerCreationContext.reset();
     }
 
-    @Then("I receive the doubled number")
-    public void iReceiveTheDoubledNumber() {
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+    @When("I create a new customer")
+    public void iCreateANewCustomer() {
+        var createCustomerRequest = requestBuilder.buildCustomerCreateRequest();
+
+        try{
+            customerCreationContext.setResponse(customerController.createCustomer(createCustomerRequest));
+            customerCreationContext.setStatus(OK.value());
+        } catch (FeignException e) {
+            customerCreationContext.setStatus(e.status());
+            customerCreationContext.setException(e);
         }
-        System.out.println("am fost pe aici");
+    }
+
+    @Then("I receive the created customer")
+    public void iReceiveTheCreatedCustomer() {
+        AssertionsUtils.assertAPISuccess(customerCreationContext);
+
+        var customerResponse = customerCreationContext.getResponse();
+        assertNotNull(customerResponse);
     }
 }
