@@ -3,3 +3,11 @@ spring:
     name: customer-app
   profiles:
     active: local
+
+  xdisx:
+    environment: LOCAL
+    customer:
+      openfeign:
+        logLevel: BASIC
+      contract:
+        client-name: contract-app
