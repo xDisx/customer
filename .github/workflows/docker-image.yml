@@ -16,6 +16,9 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Build with Gradle
+        env:
+          GITHUB_ACTOR: 'magraul'
+          GITHUB_TOKEN: ${{ secrets.GH_SHARED_LIB_PAT }}
         run: |
           chmod +x ./gradlew
           ./gradlew clean build -x test
