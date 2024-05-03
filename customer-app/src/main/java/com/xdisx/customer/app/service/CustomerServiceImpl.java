@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
-  private static final String CUSTOMER_SAVE_ERROR = "Unable to save customer";
+  public static final String CUSTOMER_SAVE_ERROR = "Unable to save customer";
   private final CustomerRepository customerRepository;
   private final ContractRepository contractRepository;
 
@@ -34,7 +34,10 @@ public class CustomerServiceImpl implements CustomerService {
     log.info("Calling contract");
     ContractResponseDto contract =
         contractRepository.createContract(
-            ContractCreateRequestDto.builder().contractType("Sall from customer").customerId(BigInteger.ONE).build());
+            ContractCreateRequestDto.builder()
+                .contractType("Sall from customer")
+                .customerId(BigInteger.ONE)
+                .build());
     log.info("Contract created: {}", contract);
     return CustomerConverter.toCustomerResponse(customer);
   }
