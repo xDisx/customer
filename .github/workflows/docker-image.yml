@@ -33,3 +33,10 @@ jobs:
           cd ./customer-app
           docker build . --file Dockerfile --tag ghcr.io/magraul/customer-app:latest
           docker push ghcr.io/magraul/customer-app:latest
+
+      - name: SonarQube Analysis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          ./gradlew clean build jacocoTestReport sonar
