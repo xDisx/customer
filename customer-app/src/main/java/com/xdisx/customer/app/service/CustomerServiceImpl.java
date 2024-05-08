@@ -1,7 +1,5 @@
 package com.xdisx.customer.app.service;
 
-import com.xdisx.contract.api.dto.request.ContractCreateRequestDto;
-import com.xdisx.contract.api.dto.response.ContractResponseDto;
 import com.xdisx.customer.api.dto.request.CustomerCreateRequestDto;
 import com.xdisx.customer.api.dto.request.CustomerPageRequestDto;
 import com.xdisx.customer.api.dto.response.CustomerPageResponseDto;
@@ -13,7 +11,6 @@ import com.xdisx.customer.app.repository.db.dto.CustomerPageDto;
 import com.xdisx.customer.app.repository.db.entity.CustomerEntity;
 import com.xdisx.customer.app.repository.db.filtering.CustomerSpecificationBuilder;
 import com.xdisx.customer.app.service.converter.CustomerConverter;
-import java.math.BigInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -37,15 +34,15 @@ public class CustomerServiceImpl implements CustomerService {
     CustomerEntity customer = CustomerConverter.fromCreateRequest(customerCreateRequestDto);
 
     customer = saveAndFlushCustomer(customer);
-    log.info("Customer created: {}", customer);
-    log.info("Calling contract");
-    ContractResponseDto contract =
-        contractRepository.createContract(
-            ContractCreateRequestDto.builder()
-                .contractType("Sall from customer")
-                .customerId(BigInteger.ONE)
-                .build());
-    log.info("Contract created: {}", contract);
+//    log.info("Customer created: {}", customer);
+//    log.info("Calling contract");
+//    ContractResponseDto contract =
+//        contractRepository.createContract(
+//            ContractCreateRequestDto.builder()
+//                .contractType("Sall from customer")
+//                .customerId(BigInteger.ONE)
+//                .build());
+//    log.info("Contract created: {}", contract);
     return CustomerConverter.toCustomerResponse(customer);
   }
 
