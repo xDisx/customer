@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerPageResponseDto {
-    private int totalPages;
-    private long totalElements;
-    private List<CustomerResponseDto> contracts;
+  private int totalPages;
+  private long totalElements;
+  private List<CustomerResponseDto> customers;
 }

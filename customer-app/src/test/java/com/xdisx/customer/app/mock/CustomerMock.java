@@ -2,12 +2,13 @@ package com.xdisx.customer.app.mock;
 
 import com.xdisx.customer.api.dto.CustomerTypeDto;
 import com.xdisx.customer.api.dto.request.CustomerCreateRequestDto;
+import com.xdisx.customer.api.dto.response.CustomerPageResponseDto;
 import com.xdisx.customer.api.dto.response.CustomerResponseDto;
 import com.xdisx.customer.app.repository.db.entity.CustomerEntity;
 import com.xdisx.customer.app.repository.db.entity.CustomerType;
-import lombok.experimental.UtilityClass;
-
 import java.math.BigInteger;
+import java.util.List;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class CustomerMock {
@@ -28,5 +29,14 @@ public class CustomerMock {
         customerEntity.setId(CUSTOMER_ID);
 
         return customerEntity;
+    }
+
+    public static CustomerPageResponseDto getCustomerPageResponse() {
+        CustomerPageResponseDto customerPageResponseDto = new CustomerPageResponseDto();
+        customerPageResponseDto.setTotalPages(1);
+        customerPageResponseDto.setTotalElements(1);
+        customerPageResponseDto.setCustomers(List.of(getCustomerResponse()));
+
+        return customerPageResponseDto;
     }
 }

@@ -1,0 +1,10 @@
+{
+  "totalPages": 1,
+  "totalElements": 1,
+  "customers": [
+    {
+      "customerType": "PRIVATE",
+      "id": 1
+    }
+  ]
+}
