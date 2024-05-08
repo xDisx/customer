@@ -1,8 +1,13 @@
 package com.xdisx.customer.e2e.customer.steps;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.http.HttpStatus.OK;
+
+import com.xdisx.customer.api.dto.request.CustomerPageRequestDto;
 import com.xdisx.customer.e2e.CucumberBootstrap;
 import com.xdisx.customer.e2e.common.utils.AssertionsUtils;
 import com.xdisx.customer.e2e.customer.rest.CustomerController;
+import com.xdisx.customer.e2e.customer.steps.context.GetCustomersContext;
 import com.xdisx.customer.e2e.customer.steps.service.RequestBuilderServiceCustomer;
 import feign.FeignException;
 import io.cucumber.java.Before;
@@ -10,13 +15,11 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.RequiredArgsConstructor;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.http.HttpStatus.OK;
-
 @RequiredArgsConstructor
 public class CustomerSteps extends CucumberBootstrap {
     private final CustomerController customerController;
     private final RequestBuilderServiceCustomer requestBuilder;
+    private GetCustomersContext getCustomersContext;
 
     @Before
     public void setup() {
@@ -42,5 +45,24 @@ public class CustomerSteps extends CucumberBootstrap {
 
         var customerResponse = customerCreationContext.getResponse();
         assertNotNull(customerResponse);
+    }
+
+    @When("I request the first page of customers")
+    public void iRequestTheFirstPageOfCustomers() {
+        var getCustomersRequest = CustomerPageRequestDto.builder().build();
+        getCustomersContext = new GetCustomersContext();
+        try {
+            getCustomersContext.setCustomerPageResponseDto(customerController.getCustomers(getCustomersRequest));
+            getCustomersContext.setStatus(OK.value());
+        } catch (FeignException e) {
+            getCustomersContext.setException(e);
+        }
+    }
+
+    @Then("I receive a page of customers")
+    public void iReceiveAPageOfCustomers() {
+        AssertionsUtils.assertAPISuccess(getCustomersContext);
+        var response = getCustomersContext.getCustomerPageResponseDto();
+        assertNotNull(response);
     }
 }
