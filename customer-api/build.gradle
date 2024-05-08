@@ -13,4 +13,5 @@ bootJar {
 
 dependencies {
     implementation 'org.springframework:spring-web:6.1.6'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1'
 }
