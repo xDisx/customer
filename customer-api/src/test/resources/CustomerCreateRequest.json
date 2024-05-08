@@ -1,3 +1,7 @@
 {
-  "customerType": "PRIVATE"
+  "firstName": "Ion",
+  "lastName": "Pop",
+  "email": "ion.pop@yahoo.com",
+  "phoneNumber": "+49134243",
+  "address": "Fagului 21"
 }

@@ -3,8 +3,13 @@
   "totalElements": 1,
   "customers": [
     {
-      "customerType": "PRIVATE",
-      "id": 1
+      "id": 1,
+      "firstName": "Ion",
+      "lastName": "Pop",
+      "email": "ion.pop@yahoo.com",
+      "phoneNumber": "+49134243",
+      "address": "Fagului 21",
+      "created": "06.10.2020 18:18:18"
     }
   ]
 }

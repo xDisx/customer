@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
-import com.xdisx.customer.api.dto.CustomerTypeDto;
 import com.xdisx.customer.api.dto.request.CustomerCreateRequestDto;
 import com.xdisx.customer.api.dto.request.CustomerPageRequestDto;
 import com.xdisx.customer.api.dto.response.CustomerPageResponseDto;
@@ -48,11 +47,7 @@ class CustomerServiceImplTest {
     assertEquals(customer, customer2);
 
     when(customerRepository.saveAndFlush(
-            argThat(
-                arg ->
-                    requestDto
-                        .getCustomerType()
-                        .equals(CustomerTypeDto.valueOf(arg.getCustomerType().toString())))))
+            argThat(arg -> requestDto.getEmail().equals(arg.getEmail()))))
         .thenReturn(customer);
     var savedCustomer = classUnderTest.createCustomer(requestDto);
 
@@ -60,9 +55,7 @@ class CustomerServiceImplTest {
         .saveAndFlush(
             argThat(
                 arg -> {
-                  assertEquals(
-                      requestDto.getCustomerType(),
-                      CustomerTypeDto.valueOf(arg.getCustomerType().toString()));
+                  assertEquals(requestDto.getEmail(), arg.getEmail());
                   return true;
                 }));
 
@@ -72,7 +65,11 @@ class CustomerServiceImplTest {
 
   private void assertCustomerResponseWithRequest(
       CustomerCreateRequestDto requestDto, CustomerResponseDto responseDto) {
-    assertEquals(requestDto.getCustomerType(), responseDto.getCustomerType());
+    assertEquals(requestDto.getFirstName(), responseDto.getFirstName());
+    assertEquals(requestDto.getLastName(), responseDto.getLastName());
+    assertEquals(requestDto.getEmail(), responseDto.getEmail());
+    assertEquals(requestDto.getPhoneNumber(), responseDto.getPhoneNumber());
+    assertEquals(requestDto.getAddress(), responseDto.getAddress());
   }
 
   @Test
@@ -97,17 +94,15 @@ class CustomerServiceImplTest {
   @Test
   void findCustomersReturnsCorrectData() {
     Pageable pageable = PageRequest.of(0, 10);
-    List<CustomerPageDto> customerEntityList =
-            List.of(new CustomerPageDtoMock());
+    List<CustomerPageDto> customerEntityList = List.of(new CustomerPageDtoMock());
     Page<CustomerPageDto> contractPage =
-            new PageImpl<>(customerEntityList, pageable, customerEntityList.size());
+        new PageImpl<>(customerEntityList, pageable, customerEntityList.size());
 
     when(customerRepository.findBy(ArgumentMatchers.<Specification<CustomerEntity>>any(), any()))
-            .thenReturn(contractPage);
+        .thenReturn(contractPage);
 
     CustomerPageResponseDto result =
-            classUnderTest.findCustomers(
-                    CustomerPageRequestDto.builder().build());
+        classUnderTest.findCustomers(CustomerPageRequestDto.builder().build());
 
     assertNotNull(result);
     assertEquals(customerEntityList.size(), result.getCustomers().size());
@@ -118,17 +113,16 @@ class CustomerServiceImplTest {
   @Test
   void testFindCustomersByCreatedOn() {
     Pageable pageable = PageRequest.of(0, 10);
-    List<CustomerPageDto> customerPageDtos =
-            List.of(new CustomerPageDtoMock());
+    List<CustomerPageDto> customerPageDtos = List.of(new CustomerPageDtoMock());
     Page<CustomerPageDto> contractPage =
-            new PageImpl<>(customerPageDtos, pageable, customerPageDtos.size());
+        new PageImpl<>(customerPageDtos, pageable, customerPageDtos.size());
 
     when(customerRepository.findBy(ArgumentMatchers.<Specification<CustomerEntity>>any(), any()))
-            .thenReturn(contractPage);
+        .thenReturn(contractPage);
 
     CustomerPageResponseDto result =
-            classUnderTest.findCustomers(
-                    CustomerPageRequestDto.builder().createdOn(LocalDate.now()).build());
+        classUnderTest.findCustomers(
+            CustomerPageRequestDto.builder().createdOn(LocalDate.now()).build());
 
     assertNotNull(result);
     assertEquals(customerPageDtos.size(), result.getCustomers().size());

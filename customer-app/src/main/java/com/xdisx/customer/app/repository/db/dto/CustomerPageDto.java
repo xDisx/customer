@@ -1,7 +1,5 @@
 package com.xdisx.customer.app.repository.db.dto;
 
-import com.xdisx.customer.app.repository.db.entity.CustomerType;
-
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
@@ -12,5 +10,13 @@ public interface CustomerPageDto {
 
   LocalDateTime getModified();
 
-  CustomerType getCustomerType();
+  String getFirstName();
+
+  String getLastName();
+
+  String getEmail();
+
+  String getPhoneNumber();
+
+  String getAddress();
 }
