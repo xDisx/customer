@@ -111,7 +111,7 @@ class CustomerServiceImplTest {
   }
 
   @Test
-  void testFindCustomersByCreatedOn() {
+  void testFindCustomersByAllCriteria() {
     Pageable pageable = PageRequest.of(0, 10);
     List<CustomerPageDto> customerPageDtos = List.of(new CustomerPageDtoMock());
     Page<CustomerPageDto> contractPage =
@@ -122,7 +122,11 @@ class CustomerServiceImplTest {
 
     CustomerPageResponseDto result =
         classUnderTest.findCustomers(
-            CustomerPageRequestDto.builder().createdOn(LocalDate.now()).build());
+            CustomerPageRequestDto.builder()
+                .customerName(CustomerMock.FIRST_NAME)
+                .email(CustomerMock.EMAIL)
+                .phoneNumber(CustomerMock.PHONE_NUMBER)
+                .build());
 
     assertNotNull(result);
     assertEquals(customerPageDtos.size(), result.getCustomers().size());
