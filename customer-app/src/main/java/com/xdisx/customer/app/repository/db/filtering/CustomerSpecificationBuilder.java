@@ -4,8 +4,6 @@ import com.xdisx.customer.api.dto.request.CustomerPageRequestDto;
 import com.xdisx.customer.app.repository.db.entity.CustomerEntity;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.criteria.Predicate;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.experimental.UtilityClass;
@@ -52,11 +50,5 @@ public class CustomerSpecificationBuilder {
       Predicate lastNamePredicate = builder.like(builder.lower(root.get("lastName")), pattern);
       return builder.or(firstNamePredicate, lastNamePredicate);
     };
-  }
-
-  private static Specification<CustomerEntity> buildEqualSpecificationCreatedOn(Object value) {
-    LocalDateTime localDate = ((LocalDate) value).atStartOfDay();
-    LocalDateTime localDate1 = localDate.plusDays(1).minusNanos(1);
-    return (root, query, builder) -> builder.between(root.get("created"), localDate, localDate1);
   }
 }
