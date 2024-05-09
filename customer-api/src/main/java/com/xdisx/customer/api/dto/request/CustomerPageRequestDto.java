@@ -15,20 +15,27 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerPageRequestDto {
-    @NotNull(message = "Page number must not be null!") @Min(value = 0, message = "Invalid page number, must be greater than or equals 0!")
-    @Builder.Default
-    private Integer pageNumber = 0;
+  @NotNull(message = "Page number must not be null!")
+  @Min(value = 0, message = "Invalid page number, must be greater than or equals 0!")
+  @Builder.Default
+  private Integer pageNumber = 0;
 
-    @NotNull(message = "Page size must not be null!") @Min(value = 10, message = "Invalid page size, must be greater than or equals 10!")
-    @Max(value = 50, message = "Invalid page size, must be less than or equals 50!")
-    @Builder.Default
-    private Integer pageSize = 10;
+  @NotNull(message = "Page size must not be null!")
+  @Min(value = 10, message = "Invalid page size, must be greater than or equals 10!")
+  @Max(value = 50, message = "Invalid page size, must be less than or equals 50!")
+  @Builder.Default
+  private Integer pageSize = 10;
 
-    @NotNull(message = "Sort by must not be null!") @Builder.Default
-    private String sortBy = "created";
+  @NotNull(message = "Sort by must not be null!")
+  @Builder.Default
+  private String sortBy = "created";
 
-    @NotNull(message = "Order by must not be null!") @Builder.Default
-    private OrderByDirection orderBy = OrderByDirection.DESC;
+  @NotNull(message = "Order by must not be null!")
+  @Builder.Default
+  private OrderByDirection orderBy = OrderByDirection.DESC;
 
-    private LocalDate createdOn;
+  private LocalDate createdOn;
+  private String customerName;
+  private String email;
+  private String phoneNumber;
 }

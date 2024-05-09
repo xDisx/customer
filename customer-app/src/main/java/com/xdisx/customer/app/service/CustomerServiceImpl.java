@@ -34,34 +34,34 @@ public class CustomerServiceImpl implements CustomerService {
     CustomerEntity customer = CustomerConverter.fromCreateRequest(customerCreateRequestDto);
 
     customer = saveAndFlushCustomer(customer);
-//    log.info("Customer created: {}", customer);
-//    log.info("Calling contract");
-//    ContractResponseDto contract =
-//        contractRepository.createContract(
-//            ContractCreateRequestDto.builder()
-//                .contractType("Sall from customer")
-//                .customerId(BigInteger.ONE)
-//                .build());
-//    log.info("Contract created: {}", contract);
+    //    log.info("Customer created: {}", customer);
+    //    log.info("Calling contract");
+    //    ContractResponseDto contract =
+    //        contractRepository.createContract(
+    //            ContractCreateRequestDto.builder()
+    //                .contractType("Sall from customer")
+    //                .customerId(BigInteger.ONE)
+    //                .build());
+    //    log.info("Contract created: {}", contract);
     return CustomerConverter.toCustomerResponse(customer);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public CustomerPageResponseDto findCustomers(CustomerPageRequestDto customerPageRequestDto) {
-    PageRequest pageRequest =
-            CustomerConverter.toPageRequest(customerPageRequestDto);
+    PageRequest pageRequest = CustomerConverter.toPageRequest(customerPageRequestDto);
     Specification<CustomerEntity> specifications =
-            CustomerSpecificationBuilder.getFilterSpecifications(customerPageRequestDto);
+        CustomerSpecificationBuilder.getFilterSpecifications(customerPageRequestDto);
 
     Page<CustomerPageDto> result =
-            customerRepository.findBy(
-                    specifications,
-                    q -> q.as(CustomerPageDto.class).sortBy(pageRequest.getSort()).page(pageRequest));
+        customerRepository.findBy(
+            specifications,
+            q -> q.as(CustomerPageDto.class).sortBy(pageRequest.getSort()).page(pageRequest));
 
     return new CustomerPageResponseDto(
-            result.getTotalPages(),
-            result.getTotalElements(),
-            CustomerConverter.toListCustomerResponse(result));
+        result.getTotalPages(),
+        result.getTotalElements(),
+        CustomerConverter.toListCustomerResponse(result));
   }
 
   private CustomerEntity saveAndFlushCustomer(CustomerEntity customer) {
