@@ -21,7 +21,7 @@ public class CustomerPageRequestDto {
 
   @NotNull(message = "Page size must not be null!")
   @Min(value = 10, message = "Invalid page size, must be greater than or equals 10!")
-  @Max(value = 50, message = "Invalid page size, must be less than or equals 50!")
+  @Max(value = 150, message = "Invalid page size, must be less than or equals 50!")
   @Builder.Default
   private Integer pageSize = 10;
 

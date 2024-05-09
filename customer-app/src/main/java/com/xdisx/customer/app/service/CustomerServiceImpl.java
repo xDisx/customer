@@ -5,6 +5,7 @@ import com.xdisx.customer.api.dto.request.CustomerPageRequestDto;
 import com.xdisx.customer.api.dto.response.CustomerPageResponseDto;
 import com.xdisx.customer.api.dto.response.CustomerResponseDto;
 import com.xdisx.customer.api.exception.CustomerCreateException;
+import com.xdisx.customer.api.exception.CustomerNotFoundException;
 import com.xdisx.customer.app.repository.contract.ContractRepository;
 import com.xdisx.customer.app.repository.db.CustomerRepository;
 import com.xdisx.customer.app.repository.db.dto.CustomerPageDto;
@@ -19,6 +20,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigInteger;
 
 @Slf4j
 @Service
@@ -62,6 +65,18 @@ public class CustomerServiceImpl implements CustomerService {
         result.getTotalPages(),
         result.getTotalElements(),
         CustomerConverter.toListCustomerResponse(result));
+  }
+
+  @Override
+  public CustomerResponseDto getCustomer(BigInteger id) {
+    CustomerEntity customer =
+        customerRepository
+            .findById(id)
+            .orElseThrow(
+                () ->
+                    new CustomerNotFoundException(
+                        String.format("There is no customer with id %d", id)));
+    return CustomerConverter.toCustomerResponse(customer);
   }
 
   private CustomerEntity saveAndFlushCustomer(CustomerEntity customer) {
