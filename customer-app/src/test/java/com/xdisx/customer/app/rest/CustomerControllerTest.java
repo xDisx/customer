@@ -34,31 +34,29 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @ExtendWith(MockitoExtension.class)
 class CustomerControllerTest {
   private static final ObjectMapper mapper =
-          new ObjectMapper()
-                  .registerModule(new JavaTimeModule())
-                  .setDateFormat(new SimpleDateFormat("dd.MM.yyyy"));
+      new ObjectMapper()
+          .registerModule(new JavaTimeModule())
+          .setDateFormat(new SimpleDateFormat("dd.MM.yyyy"));
   private static final String CUSTOMER_PATH = "/xdisx/customer";
   private static final String CUSTOMER_RESPONSE_JSON = "CustomerResponse.json";
   private static final String CUSTOMERS_PATH = "/xdisx/customers";
   private static final String CUSTOMERS_RESPONSE_JSON = "CustomersResponse.json";
-  @Mock
-  private CustomerService customerService;
+  @Mock private CustomerService customerService;
 
-  @InjectMocks
-  private CustomerController classUnderTest;
+  @InjectMocks private CustomerController classUnderTest;
   private MockMvc mockMvc;
 
   @BeforeEach
   public void setUp() {
     MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter =
-            new MappingJackson2HttpMessageConverter();
+        new MappingJackson2HttpMessageConverter();
     mappingJackson2HttpMessageConverter.setObjectMapper(mapper);
 
     mockMvc =
-            MockMvcBuilders.standaloneSetup(classUnderTest)
-                    .setMessageConverters(mappingJackson2HttpMessageConverter)
-                    .setControllerAdvice(CustomerControllerExceptionHandler.class)
-                    .build();
+        MockMvcBuilders.standaloneSetup(classUnderTest)
+            .setMessageConverters(mappingJackson2HttpMessageConverter)
+            .setControllerAdvice(CustomerControllerExceptionHandler.class)
+            .build();
   }
 
   @Test
@@ -69,17 +67,17 @@ class CustomerControllerTest {
     when(customerService.createCustomer(customerRequest)).thenReturn(response);
 
     var apiResponse =
-            mockMvc
-                    .perform(
-                            post(CUSTOMER_PATH)
-                                    .content(mapper.writeValueAsString(customerRequest))
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isCreated())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                    .andReturn()
-                    .getResponse()
-                    .getContentAsString();
+        mockMvc
+            .perform(
+                post(CUSTOMER_PATH)
+                    .content(mapper.writeValueAsString(customerRequest))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isCreated())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
 
     var expectedResponse = FileReadUtil.readResourceAsString(CUSTOMER_RESPONSE_JSON);
     JSONAssert.assertEquals(expectedResponse, apiResponse, JSONCompareMode.LENIENT);
@@ -91,19 +89,41 @@ class CustomerControllerTest {
     when(customerService.findCustomers(any(CustomerPageRequestDto.class))).thenReturn(responseDto);
 
     var apiResponse =
-            mockMvc
-                    .perform(
-                            get(CUSTOMERS_PATH)
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .accept(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                    .andReturn()
-                    .getResponse()
-                    .getContentAsString();
+        mockMvc
+            .perform(
+                get(CUSTOMERS_PATH)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
 
     assertNotNull(apiResponse);
     var expectedResponse = FileReadUtil.readResourceAsString(CUSTOMERS_RESPONSE_JSON);
+    JSONAssert.assertEquals(expectedResponse, apiResponse, JSONCompareMode.LENIENT);
+  }
+
+  @Test
+  void getCustomer() throws Exception {
+    CustomerResponseDto responseDto = CustomerMock.getCustomerResponse();
+    when(customerService.getCustomer(responseDto.getID())).thenReturn(responseDto);
+
+    var apiResponse =
+        mockMvc
+            .perform(
+                get(CUSTOMERS_PATH + "/" + responseDto.getID())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+
+    assertNotNull(apiResponse);
+    var expectedResponse = FileReadUtil.readResourceAsString(CUSTOMER_RESPONSE_JSON);
     JSONAssert.assertEquals(expectedResponse, apiResponse, JSONCompareMode.LENIENT);
   }
 }

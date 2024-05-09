@@ -10,6 +10,7 @@ import com.xdisx.customer.api.dto.request.CustomerPageRequestDto;
 import com.xdisx.customer.api.dto.response.CustomerPageResponseDto;
 import com.xdisx.customer.api.dto.response.CustomerResponseDto;
 import com.xdisx.customer.api.exception.CustomerCreateException;
+import com.xdisx.customer.api.exception.CustomerNotFoundException;
 import com.xdisx.customer.app.mock.CustomerMock;
 import com.xdisx.customer.app.mock.CustomerPageDtoMock;
 import com.xdisx.customer.app.repository.contract.ContractRepository;
@@ -23,7 +24,9 @@ import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -204,5 +207,30 @@ class CustomerServiceImplTest {
 
     verify(cb, times(2)).lower(root.get("firstName"));
     verify(cb, times(2)).lower(root.get("lastName"));
+  }
+
+  @Test
+  void testGetCustomer_Success() {
+    CustomerEntity mockCustomer = CustomerMock.getCustomerEntity();
+
+    when(customerRepository.findById(mockCustomer.getId())).thenReturn(Optional.of(mockCustomer));
+    CustomerResponseDto expectedResponse = CustomerMock.getCustomerResponse();
+
+    CustomerResponseDto actualResponse = classUnderTest.getCustomer(mockCustomer.getId());
+
+    assertEquals(expectedResponse, actualResponse);
+    verify(customerRepository).findById(mockCustomer.getId());
+  }
+
+  @Test
+  void testGetCustomer_NotFound() {
+    BigInteger id = BigInteger.ONE;
+    when(customerRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(CustomerNotFoundException.class, () -> {
+      classUnderTest.getCustomer(id);
+    });
+
+    verify(customerRepository).findById(id);
   }
 }

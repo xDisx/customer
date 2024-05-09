@@ -57,6 +57,20 @@ public class CustomerMock {
     return customerEntity;
   }
 
+  public static CustomerEntity getCustomerEntity() {
+    CustomerEntity customerEntity = new CustomerEntity();
+
+    customerEntity.setId(CUSTOMER_ID);
+    customerEntity.setFirstName(FIRST_NAME);
+    customerEntity.setLastName(LAST_NAME);
+    customerEntity.setPhoneNumber(PHONE_NUMBER);
+    customerEntity.setEmail(EMAIL);
+    customerEntity.setAddress(ADDRESS);
+    customerEntity.setCreated(LocalDateTime.parse(CREATED, formatter));
+
+    return customerEntity;
+  }
+
   public static CustomerPageResponseDto getCustomerPageResponse() {
     CustomerPageResponseDto customerPageResponseDto = new CustomerPageResponseDto();
     customerPageResponseDto.setTotalPages(1);

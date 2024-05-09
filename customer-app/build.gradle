@@ -53,6 +53,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:10.11.1'
     implementation 'org.flywaydb:flyway-database-postgresql:10.11.1'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.2.5'
 
     testImplementation 'software.amazon.awssdk:utils:2.25.40'
 
