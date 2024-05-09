@@ -4,7 +4,6 @@ import com.xdisx.customer.api.dto.OrderByDirection;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +33,6 @@ public class CustomerPageRequestDto {
   @Builder.Default
   private OrderByDirection orderBy = OrderByDirection.DESC;
 
-  private LocalDate createdOn;
   private String customerName;
   private String email;
   private String phoneNumber;

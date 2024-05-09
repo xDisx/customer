@@ -17,10 +17,6 @@ public class CustomerSpecificationBuilder {
       CustomerPageRequestDto customerPageRequestDto) {
     List<Specification<CustomerEntity>> specifications = new ArrayList<>();
 
-    if (customerPageRequestDto.getCreatedOn() != null) {
-      specifications.add(buildEqualSpecificationCreatedOn(customerPageRequestDto.getCreatedOn()));
-    }
-
     if (StringUtils.isNotBlank(customerPageRequestDto.getCustomerName())) {
       specifications.add(buildNameLikeSpecification(customerPageRequestDto.getCustomerName()));
     }
