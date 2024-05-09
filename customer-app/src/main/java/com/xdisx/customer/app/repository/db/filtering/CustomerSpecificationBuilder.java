@@ -31,19 +31,19 @@ public class CustomerSpecificationBuilder {
     return Specification.allOf(specifications);
   }
 
-  private static Specification<CustomerEntity> buildPhoneNumberLikeSpecification(
+  public static Specification<CustomerEntity> buildPhoneNumberLikeSpecification(
       String phoneNumber) {
     return (root, query, builder) ->
         builder.like(
             builder.lower(root.get("phoneNumber")), "%" + phoneNumber.trim().toLowerCase() + "%");
   }
 
-  private static Specification<CustomerEntity> buildEmailLikeSpecification(String email) {
+  public static Specification<CustomerEntity> buildEmailLikeSpecification(String email) {
     return (root, query, builder) ->
         builder.like(builder.lower(root.get("email")), "%" + email.trim().toLowerCase() + "%");
   }
 
-  private static Specification<CustomerEntity> buildNameLikeSpecification(String customerName) {
+  public static Specification<CustomerEntity> buildNameLikeSpecification(String customerName) {
     return (root, query, builder) -> {
       String pattern = "%" + customerName.trim().toLowerCase() + "%";
       Predicate firstNamePredicate = builder.like(builder.lower(root.get("firstName")), pattern);
