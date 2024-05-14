@@ -34,6 +34,13 @@ jobs:
           docker build . --file Dockerfile --tag ghcr.io/magraul/customer-app:latest
           docker push ghcr.io/magraul/customer-app:latest
 
+      - name: Publish API Package
+        run: |
+          ./gradlew :customer-api:publish
+        env:
+          GITHUB_ACTOR: 'magraul'
+          GITHUB_TOKEN: ${{ secrets.GH_SHARED_LIB_PAT }}
+
       - name: SonarQube Analysis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
