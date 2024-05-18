@@ -27,6 +27,10 @@ public class SecurityConfig {
                 authorize
                     .requestMatchers(
                         request ->
+                            "contract-service".equals(request.getHeader("X-Internal-Request")))
+                    .permitAll()
+                    .requestMatchers(
+                        request ->
                             "customer-service".equals(request.getHeader("X-Internal-Request")))
                     .permitAll()
                     .requestMatchers("/xdisx/**")

@@ -47,7 +47,6 @@ bootJar {
 
 dependencies {
     implementation project(':customer-api')
-    implementation 'com.xdisx:contract-api:0.1.0-SNAPSHOT'
     implementation 'org.springframework.boot:spring-boot-starter-web:3.2.5'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.5'
     implementation 'org.flywaydb:flyway-core:10.11.1'
