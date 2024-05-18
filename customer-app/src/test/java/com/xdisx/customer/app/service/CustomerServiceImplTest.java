@@ -13,7 +13,6 @@ import com.xdisx.customer.api.exception.CustomerCreateException;
 import com.xdisx.customer.api.exception.CustomerNotFoundException;
 import com.xdisx.customer.app.mock.CustomerMock;
 import com.xdisx.customer.app.mock.CustomerPageDtoMock;
-import com.xdisx.customer.app.repository.contract.ContractRepository;
 import com.xdisx.customer.app.repository.db.CustomerRepository;
 import com.xdisx.customer.app.repository.db.dto.CustomerPageDto;
 import com.xdisx.customer.app.repository.db.entity.CustomerEntity;
@@ -39,7 +38,6 @@ class CustomerServiceImplTest {
   private static CustomerEntity matchingCustomer;
   private static CustomerEntity nonMatchingCustomer;
   @Mock private CustomerRepository customerRepository;
-  @Mock private ContractRepository contractRepository;
   @InjectMocks private CustomerServiceImpl classUnderTest;
 
   @BeforeAll
@@ -170,9 +168,11 @@ class CustomerServiceImplTest {
     BigInteger id = BigInteger.ONE;
     when(customerRepository.findById(id)).thenReturn(Optional.empty());
 
-    assertThrows(CustomerNotFoundException.class, () -> {
-      classUnderTest.getCustomer(id);
-    });
+    assertThrows(
+        CustomerNotFoundException.class,
+        () -> {
+          classUnderTest.getCustomer(id);
+        });
 
     verify(customerRepository).findById(id);
   }

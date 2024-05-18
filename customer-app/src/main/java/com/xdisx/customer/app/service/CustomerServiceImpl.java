@@ -6,12 +6,12 @@ import com.xdisx.customer.api.dto.response.CustomerPageResponseDto;
 import com.xdisx.customer.api.dto.response.CustomerResponseDto;
 import com.xdisx.customer.api.exception.CustomerCreateException;
 import com.xdisx.customer.api.exception.CustomerNotFoundException;
-import com.xdisx.customer.app.repository.contract.ContractRepository;
 import com.xdisx.customer.app.repository.db.CustomerRepository;
 import com.xdisx.customer.app.repository.db.dto.CustomerPageDto;
 import com.xdisx.customer.app.repository.db.entity.CustomerEntity;
 import com.xdisx.customer.app.repository.db.filtering.CustomerSpecificationBuilder;
 import com.xdisx.customer.app.service.converter.CustomerConverter;
+import java.math.BigInteger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,15 +21,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
   public static final String CUSTOMER_SAVE_ERROR = "Unable to save customer";
   private final CustomerRepository customerRepository;
-  private final ContractRepository contractRepository;
 
   @Override
   @Transactional
@@ -37,15 +34,6 @@ public class CustomerServiceImpl implements CustomerService {
     CustomerEntity customer = CustomerConverter.fromCreateRequest(customerCreateRequestDto);
 
     customer = saveAndFlushCustomer(customer);
-    //    log.info("Customer created: {}", customer);
-    //    log.info("Calling contract");
-    //    ContractResponseDto contract =
-    //        contractRepository.createContract(
-    //            ContractCreateRequestDto.builder()
-    //                .contractType("Sall from customer")
-    //                .customerId(BigInteger.ONE)
-    //                .build());
-    //    log.info("Contract created: {}", contract);
     return CustomerConverter.toCustomerResponse(customer);
   }
 

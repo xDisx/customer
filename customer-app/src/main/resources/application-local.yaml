@@ -31,7 +31,8 @@ spring:
           jdbc:
             time_zone: UTC
           default_schema: ${spring.datasource.hikari.schema}
-
+jwt:
+  secret: W6c5fP6fRvq+a5w+3YZkUm7clRmT4yr7/W+vJ9bxTV23HxzpVzFIfXS5JlFzvP+2xJY7+dLbFy1lx+oQy6YtvQ==
 xdisx:
   cors:
     origins:
