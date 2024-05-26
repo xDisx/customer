@@ -6,14 +6,13 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.util.Base64;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -47,13 +46,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(jwt).getBody();
         username = claims.getSubject();
       } catch (Exception e) {
-        // Log and handle the exception appropriately
         logger.error("JWT token validation failed", e);
       }
     }
 
     if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-      // If token is valid, set the authentication in context
       CustomAuthenticationToken authenticationToken =
           new CustomAuthenticationToken(username, null, null);
       authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
