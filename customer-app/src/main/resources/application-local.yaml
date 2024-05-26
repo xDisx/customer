@@ -13,24 +13,26 @@ spring:
       minimumIdle: 5
       maximum-pool-size: 10
       schema: xdisx-customer
-    flyway:
-      url: ${spring.datasource.url}
-      user: ${spring.datasource.username}
-      password: ${spring.datasource.password}
-      schemas: ${spring.datasource.hikari.schema}
-      default-schema: ${spring.datasource.hikari.schema}
-      enabled: true
-    jpa:
-      database-platform: org.hibernate.dialect.PostgreSQLDialect
-      generate-ddl: true
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    schemas: ${spring.datasource.hikari.schema}
+    default-schema: ${spring.datasource.hikari.schema}
+    enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: validate
-      show-sql: true
-      properties:
-        hibernate:
-          jdbc:
-            time_zone: UTC
-          default_schema: ${spring.datasource.hikari.schema}
+        jdbc:
+          time_zone: UTC
+          lob:
+            non_contextual_creation: true
+        default_schema: ${spring.datasource.hikari.schema}
 jwt:
   secret: W6c5fP6fRvq+a5w+3YZkUm7clRmT4yr7/W+vJ9bxTV23HxzpVzFIfXS5JlFzvP+2xJY7+dLbFy1lx+oQy6YtvQ==
 xdisx:
